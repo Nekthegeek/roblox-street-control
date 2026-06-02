@@ -1,42 +1,37 @@
-# SETUP Documentation
+# Setup
 
-## Project Structure
+## Repository
 
-The `roblox-street-control` project is organized into the following key folders:
+```bash
+git clone https://github.com/Nekthegeek/roblox-street-control.git
+```
 
-- **src/**: Contains all the source code files for the project, including scripts and modules.
-- **assets/**: Holds all the assets used in the game, such as images and sound files.
-- **models/**: Contains the 3D models used in the Roblox place.
-- **scripts/**: Holds various scripts that control game mechanics and interactions.
+## Roblox Studio Placement
 
-## Setting Up the Roblox Place
+Create the same folders in Roblox Studio and place each script/module in the matching service:
 
-To set up the Roblox place for the `roblox-street-control` project, follow these steps:
+```text
+ReplicatedStorage
+└── Shared
+    └── Config.lua
 
-1. **Clone the Repository**: 
-   Use Git to clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/Nekthegeek/NekthegeekFile/roblox-street-control.git
-   ```
+ServerScriptService
+├── Main.server.lua
+├── ServiceManager.lua
+├── Services
+│   ├── PlayerDataService.lua
+│   ├── CrewService.lua
+│   ├── StreetRepService.lua
+│   └── TerritoryService.lua
+└── Util
+    └── ServiceUtil.lua
+```
 
-2. **Open Roblox Studio**: 
-   Launch Roblox Studio on your computer.
+`Main.server.lua` is the entrypoint. It registers services in dependency order and starts the gameplay core.
 
-3. **Create a New Place**: 
-   Start a new place in Roblox Studio and save it within the `roblox-street-control` directory.
+## Studio Testing Notes
 
-4. **Import Assets**: 
-   - Navigate to the **assets/** folder and import all necessary assets into your place.
-
-5. **Add Models**: 
-   - Go to the **models/** folder and insert the required models into your place.
-
-6. **Insert Scripts**: 
-   - Copy all the scripts from the **scripts/** folder into appropriate locations within the Explorer window in Roblox Studio.
-
-7. **Test the Place**: 
-   - Playtest your place to ensure everything is functioning correctly. Adjust scripts and assets as necessary.
-
-## Conclusion
-
-By following this guide, you should now have a fully set up Roblox place ready for development with the `roblox-street-control` project.
+- Player data uses runtime profiles during Studio testing.
+- DataStore saving is skipped in Studio to avoid accidental writes while tuning gameplay.
+- Territory capture currently exposes server functions only. Add map zone parts or proximity triggers later and call `TerritoryService:AddInfluence(player, territoryId, amount, reason)` from trusted server scripts.
+- Any future client UI should treat remotes as display updates only. Gameplay rewards and territory changes should remain server-validated.
